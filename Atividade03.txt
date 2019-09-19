@@ -29,4 +29,4 @@ h)	Pi(id_diciplina) (turma) – pi(id_diciplina) (sigma(id_professor=’3056’)
 
 i) Encontre o nome dos alunos que cursaram todas as disciplinas.
 
-j) pi(id_aluno) (sigma(frequencia > '75%' ^ nota> '5')(aluno /cartesiano\ historico)).
+j) pi(id_aluno) (sigma(frequencia > '75%' ^ nota> '5')(historico)).
