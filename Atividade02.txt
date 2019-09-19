@@ -1,143 +1,44 @@
 1. Converta cada DER em um esquema do modelo relacional.
 
-a)
-      (*)codigo                            (*)matricula
-       |  ( )nome                           |  ( )nome
-       |   |                 +              |   |                +
-   +--------------+ (1,1)   / \    (0,N) +-------------+ (1,1)  / \
-   | Departamento |--------+   +---------| Funcionario |-------+   + gerencia
-   +--------------+         \ /          +-------------+        \ /
-                             +                |      | (0,N)     +
-                           lota       salario( )     +-----------+
 
-b)
-    ( )logradouro                     (*)id
-     | ( )numero                       | ( )nome
-     |  |                +             |  |
-   +----------+ (1,1)   / \    (1,1) +--------+ 
-   | Endereco |========+   +---------| Pessoa |
-   +----------+         \ /          +--------+
-     |  |  |             +               | 
-     |  | ( )cep       possui            + é
-     | ( )uf                            / \
-    ( )cidade                     +----+---+-----+
-                                  |              |
-                             +--------+     +----------+
-                             | Fisica |     | Juridica |
-                             +--------+     +----------+
-                               |  |           |  |  
-                               | ( )sexo      | ( )inscricao
-                              ( )cpf         ( )cnpj 
+                           
+                    a) Departamento(CODIGO, nome)
+                       Funcionario (MATRICULA,nome, salario,departamento) 
+                              
+                     b) Endereco(logradouro, numero, uf, cidade, cep)
+                        Pessoa(ID, nome, endereco)
+                        Pessoa Fisica(ID, cpf, sexo)
+                        Pessoa Juridica(ID, cnpj, inscricao)
 
-c)
-    (*)cod_banco                   (*)cod_agencia
-     | ( )nome                      | ( )nome
-     |  |             +             |  |
-   +-------+ (1,1)   / \    (1,N) +---------+
-   | Banco |--------+   +---------| Agencia |
-   +-------+         \ /          +---------+
-                      +                | (1,N)
-                     tem               |
-                                       +  
-                                      / \---( )valor_parcela
-                            empresta +   +--( )qtde_parcelas
-                                      \ /---( )taxa_juros 
-                                       +
-                                       |
-                                       | (0,N)
-                                  +---------+
-                                  | Cliente |
-                                  +---------+ 
-                                    |  |  |
-                                    |  | (*)cpf 
-                                    | ( )nome
-                                   ( )data_nasc
+                                   
+                     c) Banco(COD_BANCO, nome, agencia)
+                        Agencia(COD_AGENCIA, nome)
+                        Empresta(COD_AGENCIA,CPF, valor_parcela, qtde_parcelas, taxa_juros)
+                        Cliente (CPF, nome, data_nasc, empresta)
 
-d)
-                           (*)id_produto
-                            | ( )nome
-                            |  |                    
-                          +---------+
-                          | Produto |
-                          +---------+
-     (*)id_fornecedor          | (0,N)         (*)id_consumidor
-      | ( )nome                |                | ( )nome
-      |  |                     +                |  |   
-   +------------+ (0,N)       / \      (0,N) +------------+  
-   | Fornecedor |------------+   +-----------| Consumidor |
-   +------------+    data( )--\ /--( )qtde   +------------+
-                               +          
-                            fornece
+
+                     d) Fornecedor(ID_FORNECEDOR, nome)
+                        Produto(ID_PRODUTO, nome)
+                        Consumidor(ID_CONSUMIDOR, nome)
+                        Fornece(ID_FORNECEDOR, ID_PRODUTO, ID_CONSUMIDOR, data, qtde)
           
-e)
-    (*)matricula                (*)numero                   (*)matricula
-     | ( )nome                   | ( )sala                   | ( )nome
-     |  |            +           |  |            +           |  |
-   +-------+ (0,N)  / \  (1,1) +-------+ (0,N)  / \  (1,1) +-----------+
-   | Aluno |-------+   +-------| Turma |-------+   +-------| Professor |
-   +-------+        \ /        +-------+        \ /        +-----------+     
-                     +                           +           | 
-                matricula-se                  leciona       ( )titulo
+                     e) Aluno(MATRICULA, nome)
+                        Turma(NUMERO, sala)
+                        Professor(MATRICULA, nome, titulo)	
+                          
 
-f)
-                                     (*)numero                                  
-                                      | ( )data 
-    (*)cpf                            |  | ( )valor
-     | ( )nome                        |  |  | ( )prazo
-     |  |               +             |  |  |  |        
-   +---------+ (1,1)   / \    (0,N) +---------------+
-   | Cliente |--------+   +---------| Financiamento |
-   +---------+         \ /          +---------------+       
-                        +                   | (1,1)   
-                     contrata               |
-                                            +
-                                           / \
-                                  envolve +   +
-                                           \ /
-                                            +
-                                            |
-                                            | (0,1)
-                          renavam(*)---+---------+ 
-                            valor( )---| Veiculo |
-                              ano( )---+---------+   
-                                            | 
-                                            + é 
-                                           / \
-                                   +------+---+-----+
-                                   |                |
-                               +-------+       +---------+
-                               | Carga |       | Passeio |
-                               +-------+       +---------+
-                                |  |             |  |  
-                                | ( )num_eixos   | ( )num_portas
-                               ( )carga_max     ( )tamanho   
+                    f) Cliente(CPF, nome)
+                       Financiamento(NUMERO, data, valor, prazo)
+                       Veiculo(RENAVAM, valor, valor, ano, financiamento)
+                       Carga(num_eixos, carga_max, veiculo)
+                       Passeio(num_portas, tamanho, veiculo)
 
-g)
-    (*)email                    (*)isbn                     (*)cnpj
-     | ( )nome                   | ( )titulo                 | ( )nome
-     |  |            +           |  |            +           |  |
-   +-------+ (1,N)  / \  (0,N) +-------+ (0,N)  / \  (1,1) +---------+
-   | Autor |-------+   +-------| Livro |-------+   +-------| Editora |
-   +-------+        \ /        +-------+        \ /        +---------+     
-                     +             | (1,1)       +           
-                  escreve          |          publica       
-                                   +
-                                  / \
-                                 +   + contem
-                                  \ /
-                                   +
-                                   |
-                                   | (0,N)
-                              +----------+
-                  (*)numero---| Exemplar |---( )data_aquisicao
-                              +----------+
-
-h)
-    (*)cpf             ( )data      (*)crm   
-     | ( )nome          |            | ( )nome  
-     |  |              +-+-+         |  |  
-   +----------+ (0,N)  |/ \|  (1,N) +--------+
-   | Paciente |--------+   +--------| Medico |
-   +----------+        |\ /|        +--------+     
-      |                +-+-+         | 
-    (( ))telefone    consulta       ( )especialidade
+                    g) Autor(EMAIL, nome, livro)
+                       Livro(ISBN, titulo, exemplar, editora)
+                       Editora(CNPJ, nome)
+                       Exemplar(NUMERO, data_aquisicao)
+    
+                    h) Paciente(CPF, nome, telefone, consulta)
+                       Consulta(data)
+                       Medico  (CRM, nome, especialidade)
+    
