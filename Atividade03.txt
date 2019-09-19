@@ -12,21 +12,21 @@ Historico (id_periodo, id_disciplina, id_turma, id_aluno, frequencia, nota)
            ──────────  ─────────────  ────────  ────────
 
 a) Forneça nome e titulação dos professores.
-
+a)	Pi(nome,titulação) (professor).
 b) Forneça id, freqüência e nota dos alunos matriculados em 20042 na turma 1 da disciplina MDC053.
-
+b)	Pi(id_aluno,frequência,nota) (sigma(id_turma=’1’ ^ id_diciplina=’MDC053’ ^ id_periodo=’20042’) (diciplina)).
 c) Encontre a sala ocupada pela disciplina MDC053 em cada período que foi oferecida. 
-
+c)	pi(sala,id_periodo) (sigma(id_diciplina=’MDC053’)(turma)).
 d) Localize os alunos que tiveram aula com o professor 3056 em algum período. 
-
+d)	Pi(id_aluno) (sigma(t.id_=’3056’)(turma /cartesiano\ historico)).
 e) Forneça histórico escolar do aluno 199839550, contendo nome do aluno, período, nome da disciplina, freqüência e nota.
-
+e)	Pi(a.nome,h.id_periodo,d.nome,h.frequência,h.nota) (sigma(a.id_aluno=’199839550’)(diciplina /cartesiano\ historico/cartesiano\ aluno)). 
 f) Forneça os alunos que não possuem nota na disciplina MDC053.
-
+f)	Pi(id_aluno)(historico) – pi(id_aluno) (sigma(id_diciplina=’MDC053’)(historico)).
 g) Encontre as turmas do professor 3056 e do aluno 199839550.
-
+g)	Pi(id_turma) (sigma(id_professor=’3056’)(turma)) U pi(id_turma) (sigma(id_aluno=’199839550’(historico)).
 h) Encontre as disciplinas que não foram ministras pelo professor 3056.
-
+h)	Pi(id_diciplina) (turma) – pi(id_diciplina) (sigma(id_professor=’3056’)(turma)).
 i) Encontre o nome dos alunos que cursaram todas as disciplinas.
 
 j) Encontre os alunos que não foram reprovados (frequencia < 75% ou nota < 5) em nenhuma disciplina.
