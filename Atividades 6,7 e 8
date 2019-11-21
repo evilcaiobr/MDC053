@@ -1,0 +1,188 @@
+(Atividade 6)
+1)
+A) 
+CREATE TABLE gerente(numero_gerente INT NOT NULL PRIMARY KEY, nome_gerente VARCHAR(100) NOT NULL);
+CREATE TABLE projeto (numero_projeto INT NOT NULL PRIMARY KEY, nome_projeto VARCHAR(100) NOT NULL, data_inicio_projeto DATE, numero_gerente INT NOT NULL REFERENCES gerente(numero_gerente));
+CREATE TABLE departamento(numero_depto INT NOT NULL PRIMARY KEY, nome_depto VARCHAR(100) NOT NULL);
+CREATE TABLE empregado(numero_empregado INT NOT NULL PRIMARY KEY, nome_empregado VARCHAR(100) NOT NULL, numero_depto INT REFERENCES departamento(numero_depto));
+CREATE TABLE projeto_empregado(numero_projeto INT NOT NULL REFERENCES projeto(numero_projeto), numero_empregado INT NOT NULL REFERENCES empregado(numero_empregado), horas_trabalhadas_projeto SMALLINT DEFAULT 0);
+B) 
+CREATE TABLE FORNECEDOR(cod_fornecedor INT NOT NULL AI PRIMARY KEY, nom_fornecedor VARCHAR(100) NOT NULL, end_fornecedor VARCHAR(100)); 
+CREATE TABLE PEDIDO(cod_pedido INT NOT NULL AI PRIMARY KEY, dat_emissao DATE NOT NULL, cod_fornecedor INT NOT NULL REFERENCES FORNECEDOR(cod_fornecedor), vlr_total_pedido DECIMAL(12,2) DEFAULT 0);
+CREATE TABLE MATERIAL(cod_material INT NOT NULL AI PRIMARY KEY, dsc_material VARCHAR(100) NOT NULL, vlr_unitario DECIMAL(12,2) NOT NULL);
+CREATE TABLE PEDIDO_MATERIAL(cod_pedido INT NOT NULL PRIMARY KEY REFERENCES PEDIDO(cod_pedido), cod_material INT NOT NULL PRIMARY KEY REFERENCES MATERIAL(cod_material), qtde_material SMALLINT NOT NULL CHECK > 0, vlr_material DECIMAL(12,2) NOT NULL);
+C)
+CREATE TABLE CURSO(id_curso INT AI PRIMARY KEY, nome_curso VARCHAR(100) NOT NULL, carga_horaria SMALLINT);
+CREATE TABLE ALUNO(id_aluno INT NOT NULL AI PRIMARY KEY, nome_aluno VARCHAR(100) NOT NULL, email_aluno VARCHAR(100), fone_contato CHAR(14));
+CREATE TABLE TURMA(id_turma INT NOT NULL AI PRIMARY KEY, id_curso INT NOT NULL REFERENCES CURSO(id_curso), id_aluno INT NOT NULL REFERENCES ALUNO(id_aluno), data_matricula DATE NOT NULL);
+D)
+CREATE TABLE ESPECIALIDADE(cod_especialidade INT NOT NULL PRIMARY KEY, dsc_especialidade VARCHAR(100) NOT NULL);
+CREATE TABLE MEDICO(cod_medico INT AI PRIMARY KEY, nome_medico VARCHAR(100) NOT NULL, cod_especialidade INT NOT NULL REFERENCES ESPECIALIDADE(cod_especialidade));
+CREATE TABLE PACIENTE(id_paciente INT NOT NULL AI PRIMARY KEY, nome_paciente VARCHAR(100) NOT NULL);
+CREATE TABLE CONSULTA(id_consulta INT NOT NULL AI PRIMARY KEY, cod_medico INT NOT NULL REFERENCES MEDICO(cod_medico), id_paciente INT NOT NULL REFERENCES PACIENTE(id_paciente), data_consulta DATE NOT NULL);
+E)
+CREATE TABLE EDITORA(cod_editora INT NOT NULL AI PRIMARY KEY, nom_editora VARCHAR(100) NOT NULL);
+CREATE TABLE LIVRO(id_livro INT AI PRIMARY KEY, num_isbn CHAR(13) NOT NULL UNIQUE, tit_livro VARCHAR(100) NOT NULL, num_paginas SMALLINT CHECK > 0, cod_editora INT NOT NULL REFERENCES EDITORA(cod_editora));
+CREATE TABLE ALUNO(id_aluno INT NOT NULL AI PRIMARY KEY, num_matricula INT NOT NULL UNIQUE, nom_aluno VARCHAR(100) NOT NULL);
+CREATE TABLE EMPRESTIMO(id_emprestimo INT NOT NULL AI PRIMARY KEY, id_livro INT NOT NULL REFERENCES LIVRO(id_livro), id_aluno INT NOT NULL REFERENCES ALUNO(id_aluno), dat_emprestimo DATE NOT NULL, dat_devolucao DATE);
+
+(Atividade 7)
+A)
+CREATE TABLE aluno(
+
+id_aluno INT NOT NULL,
+
+nome_aluno VARCHAR(100) NOT NULL,
+
+PRIMARY KEY(id_aluno)
+
+);
+
+
+
+CREATE TABLE disciplina(
+
+id_disciplina INT NOT NULL,
+
+nome_disciplina VARCHAR(100) NOT NULL,
+
+carga_horaria INT CHECK(carga_horaria > 0),
+
+PRIMARY KEY(id_disciplina)
+
+);
+
+
+
+CREATE TABLE professor(
+
+id_professor INT NOT NULL,
+
+nome_professor VARCHAR(100) NOT NULL,
+
+PRIMARY KEY(id_professor)
+
+);
+
+
+
+CREATE TABLE turma(
+
+id_turma INT NOT NULL,
+
+num_periodo INT NOT NULL,
+
+id_professor INT,
+
+id_disciplina INT,
+
+PRIMARY KEY(id_turma),
+
+FOREIGN KEY(id_professor) REFERENCES professor(id_professor) ON DELETE CASCADE,
+
+FOREIGN KEY(id_disciplina) REFERENCES disciplina(id_disciplina)
+
+);
+
+
+
+CREATE TABLE historico(
+
+id_historico INT NOT NULL,
+
+id_turma INT NOT NULL,
+
+id_aluno INT NOT NULL,
+
+num_faltas SMALLINT,
+
+media_final DECIMAL(3,1),
+
+PRIMARY KEY(id_historico),
+
+FOREIGN KEY(id_turma) REFERENCES turma(id_turma) ON DELETE CASCADE,
+
+FOREIGN KEY(id_aluno) REFERENCES aluno(id_aluno)
+
+);
+B)
+INSERT INTO aluno (id_aluno) VALUES (1);
+-O id_aluno ficou com o valor 1 e os otros atributos ficaram com o valor null ou vazio.
+C)
+INSERT INTO aluno (id_aluno, nome_aluno) VALUES (1, JOSE);
+INSERT INTO aluno (id_aluno, nome_aluno) VALUES (2, MARIA);
+INSERT INTO aluno (id_aluno, nome_aluno) VALUES (3, BRUNO);
+INSERT INTO aluno (id_aluno, nome_aluno) VALUES (4, CARLA);
+INSERT INTO aluno (id_aluno, nome_aluno) VALUES (5, PEDRO);
+D)
+INSERT INTO diciplina (id_diciplina, nome_disciplina, carga_horaria) VALUES (1,’ BANCO DE DADOS I’, -1);
+-Não foi possível inserir na tabelo, porque a carga horaria foi condicionada como maior que zero.
+E)
+INSERT INTO diciplina (id_diciplina, nome_disciplina, carga_horaria) VALUES (1,’ BANCO DE DADOS I’, 60);
+INSERT INTO diciplina (id_diciplina, nome_disciplina, carga_horaria) VALUES (2,’ BANCO DE DADOS II’, 60);
+F)
+INSERT INTO professor(id_professor,nome_professor) VALUES(1, LETICIA);
+INSERT INTO professor(id_professor,nome_professor) VALUES(2,JOSE REGINALDO);
+G)
+INSERT INTO turma(id_turma, num_periodo) VALUES(1, 20192);
+- Foi incluiu um registro com sucesso.
+H) INSERT INTO turma(id_turma, num_periodo) VALUES(1, 20201);
+- Foi incluiu um registro com sucesso.
+I)
+INSERT INTO turma(id_turma, num_periodo, id_professor) VALUES(1, 20201,3);
+- Foi incluiu um registro com sucesso.
+J)
+INSERT INTO turma(id_turma,num_periodo,id_professor,id_disciplina) VALUES(3, 20201,1,1);
+INSERT INTO turma(id_turma,num_periodo,id_professor,id_disciplina) VALUES(4,20202,2,2);
+K)
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(1,1,1);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(2,1,2);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(3,1,3);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(4,1,4);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(5,3,1);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(6,3,2);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(7,4,3);
+INSERT INTO historico(id_historico, id_turma, id_aluno) VALUES(8,4,4);
+L)
+UPDATE aluno SET nome_aluno=’JOAO’ [WHERE nome_aluno=’JOSE’];
+M)
+ UPDATE disciplina SET id_disciplina=3 [WHERE nome_disciplina=BANCO DE DADOS I];
+-O registro alterou todos os id_disciplina da disciplina banco de dados 1 para 3.
+N)
+ UPDATE historico SET media_final=5;
+O)
+DELETE FROM aluno [WHERE nome_aluno=’PEDRO’];
+-O aluno chamado Pedro foi apagado dos registros.
+P)
+DELETE FROM disciplina [WHERE nome_disciplina=’BANCO DE DADOS I’];
+-Todos os registro da matéria banco de dados 2 foram apagadas.
+Q)
+DELETE FROM professor [WHERE nome_professor=’REGINALDO’];
+-O professor Reginaldo foi apagado dos registros.
+
+(Atividade 8)
+A)
+SELECT nome_professor FROM professor;
+B)
+SELECT nome_aluno FROM aluno WHERE nome LIKE ‘A%’;
+C)
+SELECT id_aluno FROM aluno WHERE(SELECT id_turma FROM turma WHERE id_turma=1 )
+UNION
+SELECT num_faltas FROM historico WHERE(SELECT id_turma FROM turma WHERE   id_turma=1 )
+UNION
+SELECT media_final FROM historico WHERE(SELECT id_turma FROM turma WHERE id_turma=1 );
+D)
+SELECT id_aluno FROM aluno WHERE(SELECT id_turma FROM turma WHERE id_turma=1)
+INTERSECT
+SELECT id_aluno FROM aluno WHERE(SELECT media_final FROM histórico WHERE media_final<5);
+E) 
+SELECT id_aluno,nome_aluno FROM aluno WHERE(SELECT media_final,num_faltas FROM histórico WHERE media_final>5 AND num_faltas<21);
+F)
+SELECT nome_aluno FROM aluno WHERE(SELECT nome_professor FROM professor WHERE nome_professor=’REGINALDO’) ORDER BY nome_aluno;
+G)
+SELECT id_diciplina FROM turma WHERE(SELECT nome_professor FROM turma );
+
+H)
+SELECT media_final,AVG(media_total) FROM histórico;
+I)
+SELECT id_alunos,SUM(num_alunos) FROM histórico WHERE(SELECT nome_disciplina FROM disciplina WHERE nome_disciplina=’BANCO DE DADOS I’);
